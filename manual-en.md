@@ -92,4 +92,4 @@ Enable **09 Preview → Use Evaluation Time** and change **Evaluation Time** to 
 
 ## Support
 
-Publisher: [rhymage](https://www.rhymage.com/). Report an issue at [GitHub Issues](https://github.com/rhymage/univasal-pcg-scatter-docs/issues) with engine version, source mode, a short reproduction and relevant log excerpts. Remove private paths and project data before posting publicly. The public repository contains documentation only; the plugin is distributed separately through Fab.
+Publisher: [rhymage](https://www.rhymage.com/). Report an issue at [GitHub Issues](https://github.com/rhymage/universal-pcg-scatter-docs/issues) with engine version, source mode, a short reproduction and relevant log excerpts. Remove private paths and project data before posting publicly. The public repository contains documentation only; the plugin is distributed separately through Fab.

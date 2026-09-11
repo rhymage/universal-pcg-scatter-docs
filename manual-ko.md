@@ -92,4 +92,4 @@ Elements 항목의 Type = Skeletal Mesh로 바꾸고 메쉬 및 Animation 또는
 
 ## 지원
 
-퍼블리셔: [rhymage](https://www.rhymage.com/). [GitHub Issues](https://github.com/rhymage/univasal-pcg-scatter-docs/issues)에 엔진 버전, 소스 모드, 재현 방법, 관련 로그를 남겨 주세요. 공개 게시 전 개인 경로와 비공개 프로젝트 정보는 제거하세요. 공개 저장소는 매뉴얼 전용이며 플러그인은 Fab을 통해 별도 배포합니다.
+퍼블리셔: [rhymage](https://www.rhymage.com/). [GitHub Issues](https://github.com/rhymage/universal-pcg-scatter-docs/issues)에 엔진 버전, 소스 모드, 재현 방법, 관련 로그를 남겨 주세요. 공개 게시 전 개인 경로와 비공개 프로젝트 정보는 제거하세요. 공개 저장소는 매뉴얼 전용이며 플러그인은 Fab을 통해 별도 배포합니다.
