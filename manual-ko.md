@@ -1,5 +1,7 @@
 # Universal PCG Scatter
 
+[전체 파라미터 참조](https://app.rhymage.com/universal-pcg-scatter-docs/parameters-ko.html)
+
 사용자 매뉴얼 · 버전 1.0.0 · rhymage
 
 메쉬 표면, 랜드스케이프, 스플라인, 지정 영역에 사용자의 스태틱·스켈레탈 메쉬를 배치하는 언리얼 엔진 플러그인입니다. 블루프린트 액터에서 옵션을 조절하고, PCG 그래프가 네이티브 샘플링·생성 노드를 연결합니다. 스태틱 메쉬는 인스턴스 컴포넌트로, 스켈레탈 메쉬는 개별 컴포넌트로 생성됩니다.

@@ -5,3 +5,5 @@
 Official documentation by rhymage. This repository does not include the commercial plugin source or Unreal assets.
 
 Copyright 2026 rhymage. All rights reserved.
+
+[전체 파라미터](https://app.rhymage.com/universal-pcg-scatter-docs/parameters-ko.html) · [All parameters](https://app.rhymage.com/universal-pcg-scatter-docs/parameters-en.html)

@@ -1,5 +1,7 @@
 # Universal PCG Scatter
 
+[Complete parameter reference](https://app.rhymage.com/universal-pcg-scatter-docs/parameters-en.html)
+
 User manual · Version 1.0.0 · rhymage
 
 A Blueprint-controlled Unreal Engine runtime plugin for scattering your own static and skeletal meshes on surfaces, along splines, and inside a region. A PCG graph connects the native sampling and spawning nodes. Static meshes use instanced static mesh components; skeletal meshes use individual skeletal mesh components.
