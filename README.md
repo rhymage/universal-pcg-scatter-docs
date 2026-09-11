@@ -1,6 +1,6 @@
-# Univasal PCG Scatter — Documentation
+# Universal PCG Scatter — Documentation
 
-[Manual site](https://rhymage.github.io/univasal-pcg-scatter-docs/) · [한국어](manual-ko.md) · [English](manual-en.md)
+[Manual site](https://app.rhymage.com/univasal-pcg-scatter-docs/) · [한국어](manual-ko.md) · [English](manual-en.md)
 
 Official documentation by rhymage. This repository does not include the commercial plugin source or Unreal assets.
 

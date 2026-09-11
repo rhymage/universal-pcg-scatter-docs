@@ -1,4 +1,4 @@
-# Univasal PCG Scatter
+# Universal PCG Scatter
 
 User manual · Version 1.0.0 · rhymage
 
@@ -7,7 +7,7 @@ A Blueprint-controlled Unreal Engine runtime plugin for scattering your own stat
 ## Requirements and installation
 
 - Unreal Engine 5.8, Windows 64-bit. Other engine versions and platforms are not included in this release.
-- Enable **PCG** and **Univasal PCG Scatter** in Edit → Plugins, then restart.
+- Enable **PCG** and **Universal PCG Scatter** in Edit → Plugins, then restart.
 - For manual source installation, place the `UniversalScatter` folder under your project's `Plugins` folder. A compatible Visual Studio C++ toolchain is required to compile a source installation. Fab installations use Epic's build process.
 - In the Content Browser settings, enable **Show Plugin Content**. Open **UniversalScatter Content** and drag **BP_UniversalScatter** into a level.
 - The internal plugin/module name remains `UniversalScatter`; do not rename its source module or asset paths.

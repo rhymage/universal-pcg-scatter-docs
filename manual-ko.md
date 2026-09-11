@@ -1,4 +1,4 @@
-# Univasal PCG Scatter
+# Universal PCG Scatter
 
 사용자 매뉴얼 · 버전 1.0.0 · rhymage
 
@@ -7,7 +7,7 @@
 ## 설치와 준비
 
 - 지원 대상은 **Unreal Engine 5.8 / Windows 64비트**입니다. 다른 엔진 버전과 플랫폼은 이번 배포에 포함되지 않습니다.
-- Edit → Plugins에서 **PCG**, **Univasal PCG Scatter**를 활성화하고 재시작합니다.
+- Edit → Plugins에서 **PCG**, **Universal PCG Scatter**를 활성화하고 재시작합니다.
 - 소스 수동 설치는 프로젝트의 `Plugins` 아래에 `UniversalScatter` 폴더를 넣습니다. 이 경우 호환되는 Visual Studio C++ 빌드 도구가 필요합니다. Fab 설치본은 Epic의 빌드 절차를 이용합니다.
 - 콘텐츠 브라우저 설정에서 **Show Plugin Content**를 켜고, **UniversalScatter Content → BP_UniversalScatter**를 레벨에 배치합니다.
 - 내부 플러그인·모듈 이름은 `UniversalScatter`입니다. 소스 모듈 이름이나 에셋 경로를 임의로 변경하지 마세요.
