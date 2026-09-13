@@ -11,7 +11,8 @@ A Blueprint-controlled Unreal Engine runtime plugin for scattering your own stat
 - Unreal Engine 5.8, Windows 64-bit. Other engine versions and platforms are not included in this release.
 - Enable **PCG** and **Universal PCG Scatter** in Edit → Plugins, then restart.
 - For manual source installation, place the `UniversalScatter` folder under your project's `Plugins` folder. A compatible Visual Studio C++ toolchain is required to compile a source installation. Fab installations use Epic's build process.
-- In the Content Browser settings, enable **Show Plugin Content**. Open **UniversalScatter Content** and drag **BP_UniversalScatter** into a level.
+- For a Fab installation, enable both **Show Engine Content** and **Show Plugin Content** in the Content Browser settings. In the Sources panel, open **All → Engine → Plugins → Universal PCG Scatter Content**, find **BP_UniversalScatter**, and drag it into a level.
+- Fab-installed content is under **Engine → Plugins**, so looking only inside your project Content folder will not show it. The displayed folder is **Universal PCG Scatter Content**, not UniversalScatter Content. If it is still hidden, clear the Content Browser search and filters, and confirm that the plugin is enabled and the editor has restarted.
 - The internal plugin/module name remains `UniversalScatter`; do not rename its source module or asset paths.
 
 Distances are Unreal centimeters, rotation angles are degrees, flow speed is centimeters per second, and Evaluation Time is seconds. Region Extent is a **half size**: `(500,500,250)` describes a 10 × 10 × 5 meter box before actor scaling.

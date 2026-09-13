@@ -11,7 +11,8 @@
 - 지원 대상은 **Unreal Engine 5.8 / Windows 64비트**입니다. 다른 엔진 버전과 플랫폼은 이번 배포에 포함되지 않습니다.
 - Edit → Plugins에서 **PCG**, **Universal PCG Scatter**를 활성화하고 재시작합니다.
 - 소스 수동 설치는 프로젝트의 `Plugins` 아래에 `UniversalScatter` 폴더를 넣습니다. 이 경우 호환되는 Visual Studio C++ 빌드 도구가 필요합니다. Fab 설치본은 Epic의 빌드 절차를 이용합니다.
-- 콘텐츠 브라우저 설정에서 **Show Plugin Content**를 켜고, **UniversalScatter Content → BP_UniversalScatter**를 레벨에 배치합니다.
+- Fab 설치본은 콘텐츠 브라우저 설정에서 **Show Engine Content(엔진 콘텐츠 표시)**와 **Show Plugin Content(플러그인 콘텐츠 표시)**를 모두 켭니다. 소스 패널에서 **All → Engine → Plugins → Universal PCG Scatter Content**를 열고, **BP_UniversalScatter**를 찾아 레벨에 배치합니다.
+- Fab 설치본의 콘텐츠는 **Engine → Plugins** 아래에 있으므로 프로젝트 Content 폴더 안에서만 찾으면 보이지 않습니다. 화면에 표시되는 폴더 이름은 **Universal PCG Scatter Content**입니다(UniversalScatter Content가 아님). 그래도 보이지 않으면 콘텐츠 브라우저 검색과 필터를 해제하고, 플러그인 활성화 및 에디터 재시작 여부를 확인하세요.
 - 내부 플러그인·모듈 이름은 `UniversalScatter`입니다. 소스 모듈 이름이나 에셋 경로를 임의로 변경하지 마세요.
 
 거리 단위는 cm, 각도는 도, Flow Speed는 cm/초, Evaluation Time은 초입니다. **Region Extent는 반쪽 크기**입니다. `(500,500,250)`이면 액터 스케일 적용 전 전체 크기가 10 × 10 × 5m인 박스입니다.
