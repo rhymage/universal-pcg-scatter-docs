@@ -1,6 +1,32 @@
 # Universal PCG Scatter — 전체 파라미터 참조
 
-01~09의 모든 공개 옵션, Elements의 하위 설정, Scatter Actions를 코드 정의와 대조한 목록입니다. 영어 옵션명으로 검색할 수 있습니다. cm, 도, 초를 사용하며 XYZ는 축 성분, Pitch/Yaw/Roll은 회전 성분입니다. 기본값은 블루프린트·인스턴스에 따라 달라질 수 있으므로 이 페이지는 기능을 설명합니다. 생성 관련 옵션을 바꾸면 Generate Scatter를 실행하세요. 흐름은 절차적 연출이며 유체 물리·군집 AI·장애물 회피가 아닙니다.
+00~08의 모든 공개 옵션, Elements의 하위 설정, Scatter Actions를 코드 정의와 대조한 목록입니다. 영어 옵션명으로 검색할 수 있습니다. cm, 도, 초를 사용하며 XYZ는 축 성분, Pitch/Yaw/Roll은 회전 성분입니다. 기본값은 블루프린트·인스턴스에 따라 달라질 수 있으므로 이 페이지는 기능을 설명합니다. 생성 관련 옵션을 바꾸면 Generate Scatter를 실행하세요. 흐름은 절차적 연출이며 유체 물리·군집 AI·장애물 회피가 아닙니다.
+
+Version 1.1.0 · Transform → Scatter Actions → 00 Preview Settings → 01–08.
+
+## Scatter Actions
+
+| Option | 설명 |
+|---|---|
+| Generate (`GenerateScatter`) | PCG 그래프를 실행해 현재 설정으로 다시 생성합니다. PCG 컴포넌트에 PCG_UniversalScatter 그래프가 필요합니다. |
+| Cleanup (`CleanupScatter`) | 이 액터가 생성한 컴포넌트와 PCG 생성 결과를 제거합니다. 원본 소스 액터와 메쉬 에셋은 유지합니다. |
+| FitBoundsToSources (`FitBoundsToSources`) | Surface Actors와 외부 Spline Actor 바운드를 합쳐 액터 위치·Region Extent를 맞춥니다. 내장 Guide Spline은 포함하지 않으며 회전·비균일 스케일에서는 결과를 확인하세요. |
+| Reseed (`Reseed`) | 전역 Seed를 새 값으로 바꾸고 다시 생성합니다. |
+
+## 00 Preview Settings
+
+| Option | 설명 |
+|---|---|
+| Animate in Editor (`AnimateInEditor`) | 기본 ON. 에디터 뷰포트에서 절차적 모션 시간을 진행하며 끄면 일시 정지합니다. 뷰포트 Realtime이 필요합니다. 게임 모션·Use Evaluation Time·스켈레탈 애니메이션은 별도입니다. |
+| Auto Regenerate (`AutoRegenerate`) | 기본 ON. 에디터 Construction 실행 시 다시 생성합니다. 큰 배치는 끄고 Generate로 수동 생성할 수 있습니다. |
+| Low Density Preview (`LowDensityPreview`) | 목표 개수에 Preview Fraction을 곱해 적게 생성합니다. 생성 함수 공통 옵션이라 런타임 생성에도 적용됩니다. |
+| Preview Fraction (`PreviewFraction`) | Low Density Preview의 생성 비율(0.01~1)입니다. 0.2는 목표의 약 20%입니다. |
+| Show Bounds (`ShowBounds`) | 에디터에서 바운드 가이드를 표시합니다. 영역 제한 자체를 켜거나 끄지는 않습니다. |
+| Show Points (`ShowPoints`) | 에디터에서 생성된 초기 위치에 청록색 디버그 점을 표시합니다. 이동 후 현재 위치 표시가 아닙니다. |
+| Evaluation Time (`EvaluationTime`) | Sequencer로 제어할 수 있는 절차적 모션 시간(초)입니다. Use Evaluation Time과 Flow 또는 Turbulence가 필요합니다. 0이면 생성 당시 변환을 복원합니다. |
+| Use Evaluation Time (`UseEvaluationTime`) | 실시간 누적 대신 Evaluation Time을 사용합니다. 스켈레탈 애니메이션 프레임까지 동기화하지는 않습니다. |
+| Generated Count (`GeneratedCount`) | 실제로 생성된 인스턴스 수를 보여주는 읽기 전용 값입니다. |
+| Generation Status (`GenerationStatus`) | 생성 결과·목표 개수 또는 소스/메쉬 설정 오류를 보여주는 읽기 전용 메시지입니다. |
 
 ## 01 Sources
 
@@ -8,7 +34,7 @@
 |---|---|
 | Source (`Source`) | 배치 소스: Mesh Surface는 메쉬 LOD 0 삼각형, Landscape는 지면 투영, Spline은 경로, Volume은 부피 안에서 생성합니다. |
 | Surface Actors (`SurfaceActors`) | 표면 소스 액터 목록입니다. 투영 시에도 이 목록으로 대상을 제한합니다. 비워 두면 투영은 조건에 맞는 충돌 표면을 검색합니다. |
-| Spline Actor (`SplineActor`) | 외부 스플라인을 가진 액터입니다. 미지정이면 내장 Guide Spline을 사용합니다. |
+| Spline Actor (`SplineActor`) | 선택적 외부 스플라인 액터입니다. 비어 있으면 내장 GuideSpline으로 스플라인 배치·Flow·Closed Spline 영역을 처리합니다. |
 | Spline Component Name (`SplineComponentName`) | 외부 액터에 스플라인이 여러 개일 때 사용할 컴포넌트 이름입니다. None은 첫 스플라인이며, 일치하지 않으면 실패합니다. |
 | Spline Mode (`SplineMode`) | Along: 중심선, Ribbon: 중심선 좌우 띠, Interior: 닫힌 스플라인의 월드 XY 내부입니다. Interior도 Region Extent의 후보 영역 안에서 샘플링합니다. |
 | Spline Width (`SplineWidth`) | Ribbon의 반폭(cm)입니다. 200은 전체 폭 400cm입니다. 경로 소스의 밀도 추정에도 사용합니다. |
@@ -34,7 +60,7 @@
 
 | Option | 설명 |
 |---|---|
-| Elements (`Elements`) | 배치할 요소 배열입니다. 각 항목에 메쉬와 가중치·변형·움직임을 설정합니다. 아래 하위 항목 표를 참고하세요. |
+| Elements (`Elements`) | 메쉬·가중치·변환·스켈레탈 애니메이션 설정 배열입니다. 액터 전체 Flow·Turbulence가 모든 요소에 적용됩니다. |
 | Sequential Selection (`SequentialSelection`) | 가중 랜덤 대신 유효한 요소를 순서대로 선택합니다. Enabled, 유효 메쉬, 양수 Weight는 여전히 필요하며 필터 탈락으로 순서가 건너뛸 수 있습니다. |
 | Elements → Label (`Label`) | 요소를 구분하는 이름입니다. 배치 확률이나 움직임을 바꾸지는 않습니다. |
 | Elements → Enabled (`Enabled`) | 이 요소를 생성 후보에 포함할지 설정합니다. |
@@ -52,7 +78,6 @@
 | Elements → Cast Shadow (`CastShadow`) | 생성 컴포넌트의 그림자 표시 여부입니다. |
 | Elements → Collision (`Collision`) | 켜면 Query and Physics 충돌을 활성화합니다. 물리 시뮬레이션이나 장애물 회피를 자동으로 켜지는 않습니다. |
 | Elements → Cull Distance (`CullDistance`) | 거리 컬링 한계(cm)입니다. 스태틱은 인스턴스 컬링, 스켈레탈은 컴포넌트 컬링을 사용합니다. 0은 거리 제한 해제입니다. |
-| Elements → Motion (`Motion`) | Static: 절차적 이동 없음, Spline Flow: 스플라인 이동, Turbulence: 초기 위치 주변 변위입니다. Static이어도 스켈레탈 애니메이션은 별도로 재생될 수 있습니다. |
 | Elements → Animation (`Animation`) | 단일 애니메이션 에셋을 반복 재생합니다. Animation Blueprint가 지정되면 이 설정보다 우선합니다. |
 | Elements → Animation Blueprint (`AnimationBlueprint`) | 스켈레탈 메쉬에 적용할 Anim Instance 클래스입니다. 재생 속도·위상은 해당 블루프린트 로직에서 제어합니다. |
 | Elements → Animation Play Rate (`AnimationPlayRate`) | 단일 Animation 에셋 재생 속도의 랜덤 최소·최대 배율입니다. Animation Blueprint에는 적용되지 않습니다. |
@@ -119,7 +144,7 @@
 
 | Option | 설명 |
 |---|---|
-| Enable Motion (`EnableMotion`) | 절차적 움직임의 전체 스위치입니다. 각 요소의 Motion도 Static이 아니어야 합니다. 스켈레탈 애니메이션은 별도입니다. |
+| Enable Flow (`EnableFlow`) | 모든 요소에 경로 이동을 적용합니다. 기본 OFF이며 외부 Spline Actor 또는 내장 GuideSpline을 사용합니다. Enable Turbulence와 독립적으로 켭니다. |
 | Flow Speed (`FlowSpeed`) | 기본 경로 속도(cm/초)입니다. Speed Multiplier와 곱하며 음수는 반대 방향입니다. |
 | Speed Multiplier (`SpeedMultiplier`) | 생성 시 정하는 인스턴스별 속도 랜덤 배율의 최소·최대입니다. 변경 후 다시 생성하세요. |
 | End Behavior (`EndBehavior`) | Loop: 반대 끝으로 순환, Ping Pong: 왕복, Stop: 끝에서 정지, Hide: 범위를 벗어나면 크기 0으로 숨김입니다. |
@@ -127,46 +152,21 @@
 | Rotation Response (`RotationResponse`) | 진행 방향 회전의 응답 속도입니다. 클수록 빠르게 정렬합니다. Evaluation Time은 보간 없이 즉시 정렬합니다. |
 | Path Attraction (`PathAttraction`) | 터뷸런스 변위를 감쇠하는 값입니다. 클수록 경로 주변 흔들림이 줄며 물리적 스프링 시뮬레이션은 아닙니다. |
 | Motion Drag (`MotionDrag`) | 터뷸런스 변위를 줄이는 추가 감쇠입니다. Flow Speed 자체를 늦추는 값은 아닙니다. |
-| Keep On Surface (`KeepOnSurface`) | 매 움직임 평가 시 표면 투영을 추가합니다. 충돌 표면이 필요하며 인스턴스 수에 따라 비용이 증가합니다. |
+| Keep On Surface (`KeepOnSurface`) | Enable Flow가 켜졌을 때 이동 위치를 충돌 표면에 투영합니다. 인스턴스별 평가 비용이 추가됩니다. |
 | Ground Offset (`GroundOffset`) | Keep On Surface 투영 성공 시 노멀 방향으로 더할 거리(cm)입니다. |
-| Spin Degrees Per Second (`SpinDegreesPerSecond`) | XYZ축 회전 속도(도/초)입니다. X=Roll, Y=Pitch, Z=Yaw이며 움직이는 요소에 적용합니다. |
+| Spin Degrees Per Second (`SpinDegreesPerSecond`) | Enable Flow가 켜졌을 때 XYZ 회전 속도(도/초)입니다. X=Roll, Y=Pitch, Z=Yaw입니다. |
 
 ## 08 Turbulence
 
 | Option | 설명 |
 |---|---|
-| Turbulence Strength (`TurbulenceStrength`) | Curl 노이즈 기반 위치 변위 크기입니다. 0이면 꺼집니다. Path Attraction·Motion Drag에 의해 줄어듭니다. |
+| Enable Turbulence (`EnableTurbulence`) | 모든 요소에 터뷸런스 및 켜진 와류 효과를 적용합니다. 기본 OFF이며 단독 또는 Flow와 함께 사용합니다. |
+| Turbulence Strength (`TurbulenceStrength`) | Curl 노이즈 변위 크기이며 기본값 100입니다. Enable Turbulence가 필요하고 0이면 노이즈 변위가 없습니다. Path Attraction과 Motion Drag가 감쇠합니다. |
 | Turbulence Size (`TurbulenceSize`) | 터뷸런스 공간 크기(cm)입니다. 큰 값은 더 넓은 공간에서 비슷한 변화를 만듭니다. |
 | Turbulence Speed (`TurbulenceSpeed`) | 시간에 따른 터뷸런스 노이즈 변화 속도입니다. 0이면 초기 대비 변위가 생기지 않습니다. |
-| Enable Vortex (`EnableVortex`) | 움직이는 요소에 중심축 주변의 와류 회전을 적용합니다. |
+| Enable Vortex (`EnableVortex`) | Enable Turbulence가 켜졌을 때 와류 효과를 추가합니다. |
 | Vortex Actor (`VortexActor`) | 와류 중심 액터입니다. 미지정이면 Spline Flow는 초기 경로 위치, 그 외에는 스캐터 액터 위치를 중심으로 합니다. |
 | Vortex Axis (`VortexAxis`) | 와류 회전축의 월드 방향입니다. 정규화하며 0 벡터는 월드 Z를 사용합니다. |
 | Vortex Radius (`VortexRadius`) | 축에서 이 거리(cm)까지 와류 영향을 줍니다. 축에 가까울수록 강하고 경계에서 0이 됩니다. |
 | Vortex Speed (`VortexSpeed`) | 와류 각속도(도/초)이며 거리 영향이 곱해집니다. 음수로 회전 방향을 반전합니다. |
 | Vortex Inward Pull (`VortexInwardPull`) | 시간에 따라 반경을 줄이는 정도(0~1)입니다. 영향 범위 안에서 중심축으로 당깁니다. |
-
-## 09 Preview
-
-| Option | 설명 |
-|---|---|
-| Auto Regenerate (`AutoRegenerate`) | 에디터 Construction 실행 시 자동으로 다시 생성합니다. 큰 배치는 끄고 Generate Scatter를 수동 실행하는 편이 좋습니다. |
-| Low Density Preview (`LowDensityPreview`) | 목표 개수에 Preview Fraction을 곱해 적게 생성합니다. 생성 함수 공통 옵션이라 런타임 생성에도 적용됩니다. |
-| Preview Fraction (`PreviewFraction`) | Low Density Preview의 생성 비율(0.01~1)입니다. 0.2는 목표의 약 20%입니다. |
-| Show Bounds (`ShowBounds`) | 에디터에서 바운드 가이드를 표시합니다. 영역 제한 자체를 켜거나 끄지는 않습니다. |
-| Show Points (`ShowPoints`) | 에디터에서 생성된 초기 위치에 청록색 디버그 점을 표시합니다. 이동 후 현재 위치 표시가 아닙니다. |
-| Evaluation Time (`EvaluationTime`) | 명시적으로 평가할 절차적 움직임 시간(초)입니다. Use Evaluation Time과 Enable Motion을 켜며 Sequencer 키 설정이 가능합니다. |
-| Use Evaluation Time (`UseEvaluationTime`) | 실시간 누적 대신 Evaluation Time을 사용합니다. 스켈레탈 애니메이션 프레임까지 동기화하지는 않습니다. |
-| Generated Count (`GeneratedCount`) | 실제로 생성된 인스턴스 수를 보여주는 읽기 전용 값입니다. |
-| Generation Status (`GenerationStatus`) | 생성 결과·목표 개수 또는 소스/메쉬 설정 오류를 보여주는 읽기 전용 메시지입니다. |
-
-## Scatter Actions
-
-| Option | 설명 |
-|---|---|
-| Generate Scatter (`GenerateScatter`) | PCG 그래프를 실행해 현재 설정으로 다시 생성합니다. PCG 컴포넌트에 PCG_UniversalScatter 그래프가 필요합니다. |
-| Cleanup Scatter (`CleanupScatter`) | 이 액터가 생성한 컴포넌트와 PCG 생성 결과를 제거합니다. 원본 소스 액터와 메쉬 에셋은 유지합니다. |
-| Reseed (`Reseed`) | 전역 Seed를 새 값으로 바꾸고 다시 생성합니다. |
-| Start Preview (`StartPreview`) | 에디터 절차적 움직임의 시간 재생을 시작/재개합니다. 생성, Enable Motion, 요소 Motion, 뷰포트 Realtime도 확인하세요. |
-| Stop Preview (`StopPreview`) | 에디터 실시간 미리보기 시계를 멈춥니다. 런타임이나 Use Evaluation Time 평가, 스켈레탈 애니메이션 전체를 정지하는 버튼은 아닙니다. |
-| Reset Motion (`ResetMotion`) | 누적 시간과 Evaluation Time을 0으로 돌리고 절차적 변환을 시간 0으로 평가합니다. 다시 생성하지 않습니다. |
-| Fit Bounds To Sources (`FitBoundsToSources`) | Surface Actors와 외부 Spline Actor 바운드를 합쳐 액터 위치·Region Extent를 맞춥니다. 내장 Guide Spline은 포함하지 않으며 회전·비균일 스케일에서는 결과를 확인하세요. |

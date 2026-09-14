@@ -1,6 +1,32 @@
 # Universal PCG Scatter — Complete parameter reference
 
-Every public option in groups 01–09, nested Elements settings and Scatter Actions, checked against the source definitions. Search by English option name. Units are cm, degrees and seconds; XYZ denotes vector components, Pitch/Yaw/Roll denotes rotation components. Blueprint and instance defaults can differ, so this page explains behavior. Run Generate Scatter after changing generation settings. Motion is procedural, not fluid physics, flocking AI or obstacle avoidance.
+Every public option in groups 00–08, nested Elements settings and Scatter Actions, checked against the source definitions. Search by English option name. Units are cm, degrees and seconds; XYZ denotes vector components, Pitch/Yaw/Roll denotes rotation components. Blueprint and instance defaults can differ, so this page explains behavior. Auto Regenerate defaults ON; use Generate manually when it is disabled. Motion is procedural, not fluid physics, flocking AI or obstacle avoidance.
+
+Version 1.1.0 · Transform → Scatter Actions → 00 Preview Settings → 01–08.
+
+## Scatter Actions
+
+| Option | Description |
+|---|---|
+| Generate (`GenerateScatter`) | Runs the PCG graph to regenerate from current settings; PCG component needs the PCG_UniversalScatter graph. |
+| Cleanup (`CleanupScatter`) | Removes this actor's generated components and PCG output; retains source actors and mesh assets. |
+| FitBoundsToSources (`FitBoundsToSources`) | Fits actor position and Region Extent to combined Surface Actors and external Spline Actor bounds. Excludes the built-in Guide Spline; inspect the result with rotation/nonuniform scale. |
+| Reseed (`Reseed`) | Changes the global Seed and regenerates. |
+
+## 00 Preview Settings
+
+| Option | Description |
+|---|---|
+| Animate in Editor (`AnimateInEditor`) | Default ON. Advances procedural motion in editor viewports; turn off to pause. Requires viewport Realtime. Game motion and explicit Use Evaluation Time are separate; this is not a skeletal-animation pause control. |
+| Auto Regenerate (`AutoRegenerate`) | Default ON. Regenerates when editor construction runs. Disable for expensive arrangements and use Generate manually. |
+| Low Density Preview (`LowDensityPreview`) | Scales requested count by Preview Fraction. Applies to the shared generation function, including runtime generation. |
+| Preview Fraction (`PreviewFraction`) | Low Density Preview fraction (0.01–1); 0.2 requests about 20% of the target. |
+| Show Bounds (`ShowBounds`) | Shows editor bounds guides; does not enable or disable region limiting. |
+| Show Points (`ShowPoints`) | Shows cyan debug points at initial generated positions in the editor, not current animated positions. |
+| Evaluation Time (`EvaluationTime`) | Explicit procedural time in seconds, available to Sequencer. Requires Use Evaluation Time and an enabled Flow/Turbulence effect. Zero restores generated transforms. |
+| Use Evaluation Time (`UseEvaluationTime`) | Uses Evaluation Time instead of the live elapsed clock. Does not synchronize skeletal animation frames. |
+| Generated Count (`GeneratedCount`) | Read-only actual generated instance count. |
+| Generation Status (`GenerationStatus`) | Read-only generation result/target count or source/mesh configuration error message. |
 
 ## 01 Sources
 
@@ -8,7 +34,7 @@ Every public option in groups 01–09, nested Elements settings and Scatter Acti
 |---|---|
 | Source (`Source`) | Source: Mesh Surface samples LOD 0 triangles; Landscape projects to terrain; Spline uses a path; Volume samples a volume. |
 | Surface Actors (`SurfaceActors`) | Surface source actors; also restricts projection targets. When empty, projection searches eligible collision surfaces. |
-| Spline Actor (`SplineActor`) | Actor containing an external spline. If unset, uses the built-in Guide Spline. |
+| Spline Actor (`SplineActor`) | Optional external spline actor. If empty, GuideSpline supplies the path for spline placement, Flow and Closed Spline regions. |
 | Spline Component Name (`SplineComponentName`) | Selects a named spline component on the external actor. None uses the first; an unmatched name fails. |
 | Spline Mode (`SplineMode`) | Along: centerline; Ribbon: lateral band; Interior: world-XY interior of a closed spline, sampled within the Region Extent candidate area. |
 | Spline Width (`SplineWidth`) | Ribbon half-width in cm: 200 means 400 cm total width. Also used in path-source density estimation. |
@@ -34,7 +60,7 @@ Every public option in groups 01–09, nested Elements settings and Scatter Acti
 
 | Option | Description |
 |---|---|
-| Elements (`Elements`) | Array of mesh elements with weights, transforms and motion settings. See the nested element fields below. |
+| Elements (`Elements`) | Array of mesh elements with weights, transforms and skeletal animation settings. Actor-level Flow/Turbulence applies to all elements. |
 | Sequential Selection (`SequentialSelection`) | Cycles through valid elements instead of weighted random selection. Enabled, valid mesh and positive Weight remain required; rejected candidates can skip entries. |
 | Elements → Label (`Label`) | A name for identifying the element; does not affect probability or motion. |
 | Elements → Enabled (`Enabled`) | Whether this element can be selected for generation. |
@@ -52,7 +78,6 @@ Every public option in groups 01–09, nested Elements settings and Scatter Acti
 | Elements → Cast Shadow (`CastShadow`) | Enables shadow casting on generated components. |
 | Elements → Collision (`Collision`) | Enables Query and Physics collision; does not automatically enable physics simulation or obstacle avoidance. |
 | Elements → Cull Distance (`CullDistance`) | Distance culling limit in cm, using instance culling for static meshes and component culling for skeletal meshes. Zero removes the distance limit. |
-| Elements → Motion (`Motion`) | Static: no procedural motion; Spline Flow: path movement; Turbulence: displacement around the initial position. Skeletal animation can still play with Static. |
 | Elements → Animation (`Animation`) | Loops a single animation asset. An assigned Animation Blueprint takes priority. |
 | Elements → Animation Blueprint (`AnimationBlueprint`) | Anim Instance class for the skeletal mesh. Playback rate and phase are controlled by its own logic. |
 | Elements → Animation Play Rate (`AnimationPlayRate`) | Random playback-rate range for a single Animation asset; not applied to Animation Blueprints. |
@@ -119,7 +144,7 @@ Every public option in groups 01–09, nested Elements settings and Scatter Acti
 
 | Option | Description |
 |---|---|
-| Enable Motion (`EnableMotion`) | Global procedural-motion switch; each moving element must also use a non-Static Motion mode. Skeletal animation is separate. |
+| Enable Flow (`EnableFlow`) | Applies spline flow to every element. Default OFF; uses external Spline Actor or the built-in GuideSpline. Independent of Enable Turbulence. |
 | Flow Speed (`FlowSpeed`) | Base path speed in cm/s, multiplied by Speed Multiplier. Negative values travel backward. |
 | Speed Multiplier (`SpeedMultiplier`) | Per-instance random speed multiplier range sampled at generation; regenerate after changing it. |
 | End Behavior (`EndBehavior`) | Loop wraps to the other end; Ping Pong reverses; Stop clamps at an end; Hide sets scale to zero outside the path. |
@@ -127,46 +152,21 @@ Every public option in groups 01–09, nested Elements settings and Scatter Acti
 | Rotation Response (`RotationResponse`) | Rotation response rate; larger values turn faster. Explicit Evaluation Time aligns immediately without this smoothing. |
 | Path Attraction (`PathAttraction`) | Damps turbulence displacement; larger values reduce wobble. Not a physical spring simulation. |
 | Motion Drag (`MotionDrag`) | Additional damping of turbulence displacement; does not reduce Flow Speed itself. |
-| Keep On Surface (`KeepOnSurface`) | Projects to a surface on each motion evaluation; requires collision surfaces and adds per-instance cost. |
+| Keep On Surface (`KeepOnSurface`) | With Enable Flow ON, projects moving positions onto collision surfaces. Adds per-instance evaluation cost. |
 | Ground Offset (`GroundOffset`) | Offset along the hit normal after successful Keep On Surface projection, in cm. |
-| Spin Degrees Per Second (`SpinDegreesPerSecond`) | Spin in degrees/s: X=Roll, Y=Pitch, Z=Yaw; applies to moving elements. |
+| Spin Degrees Per Second (`SpinDegreesPerSecond`) | XYZ spin in degrees per second when Enable Flow is ON. X=Roll, Y=Pitch, Z=Yaw. |
 
 ## 08 Turbulence
 
 | Option | Description |
 |---|---|
-| Turbulence Strength (`TurbulenceStrength`) | Curl-noise displacement strength; zero disables it. Reduced by Path Attraction and Motion Drag. |
+| Enable Turbulence (`EnableTurbulence`) | Applies turbulence and enabled vortex effects to every element. Default OFF. Can be used alone or layered onto Flow. |
+| Turbulence Strength (`TurbulenceStrength`) | Curl-noise displacement strength; default 100. Requires Enable Turbulence; zero gives no noise displacement. Path Attraction and Motion Drag attenuate it. |
 | Turbulence Size (`TurbulenceSize`) | Turbulence spatial scale in cm; larger values spread variations over larger areas. |
 | Turbulence Speed (`TurbulenceSpeed`) | Rate of time variation in turbulence noise. Zero gives no displacement relative to its initial noise state. |
-| Enable Vortex (`EnableVortex`) | Enables rotation around a vortex axis for moving elements. |
+| Enable Vortex (`EnableVortex`) | Adds vortex motion when Enable Turbulence is ON. |
 | Vortex Actor (`VortexActor`) | Vortex center actor. If unset, Spline Flow uses its initial path position; other motion uses the scatter actor location. |
 | Vortex Axis (`VortexAxis`) | Normalized world-space vortex axis; zero falls back to world Z. |
 | Vortex Radius (`VortexRadius`) | Vortex influence radius from the axis in cm; strongest near the axis and zero at the boundary. |
 | Vortex Speed (`VortexSpeed`) | Angular speed in degrees/s multiplied by radial influence; negative values reverse rotation. |
 | Vortex Inward Pull (`VortexInwardPull`) | Amount of time-dependent radial contraction (0–1), pulling toward the axis within its influence. |
-
-## 09 Preview
-
-| Option | Description |
-|---|---|
-| Auto Regenerate (`AutoRegenerate`) | Regenerates during editor construction updates. For large sets, disable it and use Generate Scatter manually. |
-| Low Density Preview (`LowDensityPreview`) | Scales requested count by Preview Fraction. Applies to the shared generation function, including runtime generation. |
-| Preview Fraction (`PreviewFraction`) | Low Density Preview fraction (0.01–1); 0.2 requests about 20% of the target. |
-| Show Bounds (`ShowBounds`) | Shows editor bounds guides; does not enable or disable region limiting. |
-| Show Points (`ShowPoints`) | Shows cyan debug points at initial generated positions in the editor, not current animated positions. |
-| Evaluation Time (`EvaluationTime`) | Explicit procedural-motion time in seconds, usable with Sequencer keys; requires Use Evaluation Time and Enable Motion. |
-| Use Evaluation Time (`UseEvaluationTime`) | Uses Evaluation Time instead of the live elapsed clock. Does not synchronize skeletal animation frames. |
-| Generated Count (`GeneratedCount`) | Read-only actual generated instance count. |
-| Generation Status (`GenerationStatus`) | Read-only generation result/target count or source/mesh configuration error message. |
-
-## Scatter Actions
-
-| Option | Description |
-|---|---|
-| Generate Scatter (`GenerateScatter`) | Runs the PCG graph to regenerate from current settings; PCG component needs the PCG_UniversalScatter graph. |
-| Cleanup Scatter (`CleanupScatter`) | Removes this actor's generated components and PCG output; retains source actors and mesh assets. |
-| Reseed (`Reseed`) | Changes the global Seed and regenerates. |
-| Start Preview (`StartPreview`) | Starts/resumes editor procedural-motion playback. Ensure output exists, Enable Motion and element Motion are set, and viewport Realtime is enabled. |
-| Stop Preview (`StopPreview`) | Stops the live editor preview clock; does not stop runtime, explicit Evaluation Time evaluation, or all skeletal animation. |
-| Reset Motion (`ResetMotion`) | Resets elapsed time and Evaluation Time to zero and evaluates procedural transforms at time zero; does not regenerate. |
-| Fit Bounds To Sources (`FitBoundsToSources`) | Fits actor position and Region Extent to combined Surface Actors and external Spline Actor bounds. Excludes the built-in Guide Spline; inspect the result with rotation/nonuniform scale. |
