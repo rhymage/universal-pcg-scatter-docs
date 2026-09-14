@@ -26,20 +26,18 @@ Back up the project, close the editor, replace the plugin and restart. Include b
 - Unreal Engine 5.8, Windows 64-bit. Other engine versions and platforms are not included in this release.
 - Enable **PCG** and **Universal PCG Scatter** in Edit → Plugins, then restart.
 - For manual source installation, place the `UniversalScatter` folder under your project's `Plugins` folder. A compatible Visual Studio C++ toolchain is required to compile a source installation. Fab installations use Epic's build process.
-- For a Fab installation, enable both **Show Engine Content** and **Show Plugin Content** in the Content Browser settings. In the Sources panel, open **All → Engine → Plugins → Universal PCG Scatter Content**, find **BP_UniversalScatter**, and drag it into a level.
-- Fab-installed content is under **Engine → Plugins**, so looking only inside your project Content folder will not show it. The displayed folder is **Universal PCG Scatter Content**, not UniversalScatter Content. If it is still hidden, clear the Content Browser search and filters, and confirm that the plugin is enabled and the editor has restarted.
+- Place the actor in your level from the editor's top toolbar **Add (Quickly add to the project) → Universal PCG Scatter → PCG Scatter**. If the menu is missing, confirm that the plugin is enabled and restart the editor.
 - The internal plugin/module name remains `UniversalScatter`; do not rename its source module or asset paths.
 
 Distances are Unreal centimeters, rotation angles are degrees, flow speed is centimeters per second, and Evaluation Time is seconds. Region Extent is a **half size**: `(500,500,250)` describes a 10 × 10 × 5 meter box before actor scaling.
 
-## Quick start: a volume of instances
+## Quick start
 
-1. Place BP_UniversalScatter and select the actor itself in the Outliner.
-2. Set **01 Sources → Source = Volume**.
-3. Expand **03 Elements → Elements**, add an entry, choose Type = Static Mesh, and assign your mesh. Remove or replace the placeholder cube.
-4. Set **04 Distribution → Target Count = 100**. Adjust **05 Transform → Scale Min / Scale Max** for the real size of your mesh.
-5. Expand **Scatter Actions** and click **Generate**. Check **00 Preview Settings → Generated Count / Generation Status**.
-6. Auto Regenerate defaults ON and rebuilds after construction changes. If disabled, click Generate after edits. Save the level to retain the arrangement.
+1. Place an actor in the level using the editor's top toolbar **Add (Quickly add to the project) → Universal PCG Scatter → PCG Scatter**, then select it.
+2. Under **01 Sources → Source**, choose **Volume**, **Mesh Surface**, **Landscape**, or **Spline** for your placement. For surfaces, assign the targets in **Surface Actors**. For splines, assign **Spline Actor** or edit the built-in GuideSpline.
+3. Under **03 Elements → Elements**, replace the default cube in the existing entry with your mesh.
+4. Adjust **04 Distribution → Target Count** to set the number of instances.
+5. Under **05 Transform**, adjust **Position Min / Position Max** for random position offsets and **Scale Min / Scale Max** for random sizes.
 
 ## Surface placement: mesh and landscape
 
